@@ -41,7 +41,8 @@
             >ejecutar</button>
           </div>
           <br />
-          <button class="btn btn-danger btn-block" @click="semillaOk = false, semilla = 0">regresar</button>
+          <button class="btn btn-danger btn-block" @click="semillaOk = false, semilla = 0, mostrarSemillaAleatoria = false, cantidadDigitos = '', generar=false,
+           mostrarTabla = false, repetidas=''">regresar</button>
         </div>
         <div class="alert alert-danger alert-dismissible" v-if="alerta1">
           <strong>Cuidado!</strong> hay mas digitos de los permitidos
@@ -59,7 +60,7 @@
         <input
           class="form-control col-md-12"
           type="number"
-          @keyup="validar()"
+          @keyup="validar(), repetidas=''"
           v-model="cantidadDigitos"
         />
         <br />
@@ -97,7 +98,7 @@
         <br />
         <button
           class="btn btn-danger btn-block"
-          @click="mostrarSemillaAleatoria = false, cantidadDigitos = '', generar=false, mostrarTabla = false"
+          @click="mostrarSemillaAleatoria = false, cantidadDigitos = '', generar=false, mostrarTabla = false, repetidas=''"
         >regresar</button>
       </div>
       <div v-if="mostrarTabla">

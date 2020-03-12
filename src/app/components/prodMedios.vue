@@ -5,12 +5,12 @@
     <div class="container">
       <div
         @click="escribirSemilla=true, cantidadDigitosSemilla=false, semilla = 0, semilla2 = 0, semillaOk = false, repetidas ='',mostrarTabla = false "
-        class="btn btn-primary btn-block"
-      >Escribir semillas</div>
+        class="btn btn-primary btn-block">Escribir semillas
+      </div>
       <div
         @click="escribirSemilla=false, cantidadDigitosSemilla=true, semilla = 0, semilla2 = 0, mostrarSemillaAleatoria = false, repetidas ='',mostrarTabla = false"
-        class="btn btn-info btn-block"
-      >Generar semillas</div>
+        class="btn btn-info btn-block">Generar semillas
+      </div>
       <br />
       <div v-if="escribirSemilla">
         <h3 class="p-3 text-center">
@@ -19,14 +19,14 @@
         <input
           type="number"
           class="form-control col-md-12"
-          @keyup="validarSemilla()"
+          @keyup="validarSemilla(), repetidas = ''"
           v-model="semilla"
         />
         <br>
         <input
           type="number"
           class="form-control col-md-12"
-          @keyup="validarSemilla()"
+          @keyup="validarSemilla(), repetidas = ''"
           v-model="semilla2"
         />
         <br />
@@ -48,7 +48,7 @@
             >ejecutar</button>
           </div>
           <br />
-          <button class="btn btn-danger btn-block" @click="semillaOk = false, semilla = 0">regresar</button>
+          <button class="btn btn-danger btn-block" @click="semillaOk = false, semilla = 0, semilla2=0, mostrarSemillaAleatoria = false, cantidadDigitos = '', generar=false, mostrarTabla = false, repetidas=''">regresar</button>
         </div>
         <div class="alert alert-danger alert-dismissible" v-if="alerta1">
           <strong>Cuidado!</strong> hay mas digitos de los permitidos
@@ -66,7 +66,7 @@
         <input
           class="form-control col-md-12"
           type="number"
-          @keyup="validar()"
+          @keyup="validar(), repetidas=''"
           v-model="cantidadDigitos"
         />
         <br />
@@ -93,7 +93,7 @@
           <input
             type="number"
             class="form-control"
-            @keyup="ejecutarIteraciones()"
+            @keyup="ejecutarIteraciones(), repetidas=''"
             v-model="cantidadIteraciones"
           />
           <br />
@@ -106,7 +106,7 @@
         <br />
         <button
           class="btn btn-danger btn-block"
-          @click="mostrarSemillaAleatoria = false, cantidadDigitos = '', generar=false, mostrarTabla = false, repetidas = ''"
+          @click=" semilla = 0, semilla2=0,mostrarSemillaAleatoria = false, cantidadDigitos = '', generar=false, mostrarTabla = false, repetidas = ''"
         >regresar</button>
       </div>
       <div v-if="mostrarTabla">
