@@ -3,6 +3,33 @@
     <h2 class="p-4 text-center"><strong>PRODUCTOS MEDIOS</strong></h2>
     <br />
     <div class="container">
+      <h3 class="p-3 text-center">
+          <strong>Escriba la funcion del modelo,</strong>
+          <strong>escriba 'x'  donde ira el pseudoaleatorio </strong>
+        </h3>
+        <input
+          type="text"
+          class="form-control col-md-12"
+          @keyup="validarSemilla(), repetidas = '',verFuncionAlgebraica(), arreglo = []"
+          v-model="funcionn"
+        />
+        <br>
+        <div>
+          <h4 class="text-center">log(n,base)--sin(n deg)--cos(n deg)--tan(n deg)--acos(n)--asin(n)--atan(n) <br> atan2(coorX, coorY)--pow(n,exp)</h4>
+        </div>
+        <div class="alert alert-warning alert-dismissible" v-if="alerta5">
+          <strong>Debes escribir la base!</strong> loego del valor logaritmico ejemplo <strong>log(100 , base)</strong> 
+        </div>
+        <div class="alert alert-warning alert-dismissible" v-if="alerta6">
+          <strong>Debes escribir deg</strong> luego del valor a evaluar, ejemplo <strong>sin(89 deg)</strong> 
+        </div>
+        <div class="alert alert-warning alert-dismissible" v-if="alerta7">
+          <strong>Debes escribir la base!</strong> luego del valor a evaluar, ejemplo<strong>cos(100 , base)</strong> 
+        </div>
+        <div class="alert alert-warning alert-dismissible" v-if="alerta8">
+          <strong>Debes escribir la base!</strong> luego del valor a evaluar, ejemplo <strong>tan(100 , base)</strong> 
+        </div>
+        <br>
       <div
         @click="escribirSemilla=true, cantidadDigitosSemilla=false, semilla = 0, semilla2 = 0, semillaOk = false, repetidas ='',mostrarTabla = false "
         class="btn btn-primary btn-block">Escribir semillas
@@ -19,14 +46,14 @@
         <input
           type="number"
           class="form-control col-md-12"
-          @keyup="validarSemilla(), repetidas = ''"
+          @keyup="validarSemilla(), repetidas = '', arreglo = []"
           v-model="semilla"
         />
         <br>
         <input
           type="number"
           class="form-control col-md-12"
-          @keyup="validarSemilla(), repetidas = ''"
+          @keyup="validarSemilla(), repetidas = '', arreglo = []"
           v-model="semilla2"
         />
         <br />
@@ -37,7 +64,7 @@
             <input
               type="number"
               class="form-control"
-              @keyup="ejecutarIteraciones(), repetidas ='', mostrarTabla = false"
+              @keyup="ejecutarIteraciones(), repetidas ='', mostrarTabla = false, arreglo = []"
               v-model="cantidadIteraciones"
             />
             <br />
@@ -66,7 +93,7 @@
         <input
           class="form-control col-md-12"
           type="number"
-          @keyup="validar(), repetidas=''"
+          @keyup="validar(), repetidas='', arreglo = []"
           v-model="cantidadDigitos"
         />
         <br />
@@ -93,7 +120,7 @@
           <input
             type="number"
             class="form-control"
-            @keyup="ejecutarIteraciones(), repetidas=''"
+            @keyup="ejecutarIteraciones(), repetidas='',arreglo = []"
             v-model="cantidadIteraciones"
           />
           <br />
@@ -142,10 +169,29 @@
     </div>
     <div v-if="repetidas!=''">
       <apexchart width="500" type="scatter" :options="options" :series="series"></apexchart>
+      <br>
       <div>
-      <button v-if="!orden" class="btn btn-block btn-primary" @click="ordenar()">ordenar</button>
-      <button v-if="orden" class="btn btn-block btn-primary" @click="desordenar()">desordenar</button>
-    </div>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Operacion</th>
+              <th>Resultado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(resultados, index) in arreglo" :key="resultados.id">   
+              <td>{{index}}</td>           
+              <td>{{resultados.n}}</td>
+              <td>{{resultados.r}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div>
+        <button v-if="!orden" class="btn btn-block btn-primary" @click="ordenar()">ordenar</button>
+        <button v-if="orden" class="btn btn-block btn-primary" @click="desordenar()">desordenar</button>
+      </div>
     </div>    
   </div>
 </template>
@@ -193,6 +239,12 @@ export default {
           tickAmount: 1,
         }
       },
+      funcionn:'',
+      alerta5:false,
+      alerta6:false,
+      alerta7:false,
+      alerta8:false,
+      arreglo : [],
     };
   },
   created() {},
@@ -299,9 +351,6 @@ export default {
       }
     },
     crearTabla(semilla,semilla2, iteraciones) {
-      console.log(semilla);
-      console.log(semilla2)
-      console.log(iteraciones);
       let subi = 0;
       let subi2 = 0;
       let producto = 0;
@@ -387,6 +436,7 @@ export default {
       this.repetidas = edadesDistintas
       this.series[0].data = this.repetidas
       console.log(this.repetidas)
+      this.funcion(this.repetidas)
     },
     ordenar(){
       this.orden = true
@@ -399,6 +449,62 @@ export default {
       this.repetidas = edadesDistintas
       this.series[0].data = this.repetidas
     },  
+    verFuncionAlgebraica(){
+      let n = ''
+      let b = 0
+      let texto = ''
+      n = n + this.funcionn
+      for(b = 0; b<=(n.length-1);b++){
+        texto = n[b-2]+n[b-1]+n[b]
+        if(texto=='log'){
+          this.alerta5 = true
+          setTimeout(() => (this.alerta5 = false), 6000);
+        }
+        if(texto=='sin'){
+          this.alerta6 = true
+          setTimeout(() => (this.alerta6 = false), 6000);
+        }
+        if(texto=='cos'){
+          this.alerta7 = true
+          setTimeout(() => (this.alerta7 = false), 6000);
+        }
+        if(texto=='tan'){
+          this.alerta8 = true
+          setTimeout(() => (this.alerta8 = false), 6000);
+        }
+      }
+    },
+    funcion(x){
+      let t = '' 
+      let texto =  ''
+      let b = 0
+      let tt = ''
+      for (let a = 0; a<= (x.length-1); a++){
+        for(b = 0; b<=(this.funcionn.length-1);b++){
+          if(this.funcionn[b]=='x'){
+            t = t + x[a].toString()
+          }else{
+            t = t + this.funcionn[b]
+          }
+          if(b==(this.funcionn.length-1)){
+            tt = t
+            t = ''
+          }
+        }
+        //Licencia Math.js es de código abierto y tiene licencia bajo la licencia Apache 2.0
+        //https://mathjs.org/download.html
+        let variab = {
+          n:tt,
+          r:''
+        }
+        this.axios.post('http://api.mathjs.org/v4/',{"expr": [tt],"precision": 10})
+        .then(res=>{
+          variab.r = res.data.result[0]
+          this.arreglo.push(variab)
+        })
+        .catch(err=>{console.log(err)})        
+      }
+    },
   }
 };
 </script>
